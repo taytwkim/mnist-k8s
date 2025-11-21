@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mnist-app-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mnist-app
+  template:
+    metadata:
+      labels:
+        app: mnist-app
+    spec:
+      containers:
+        - name: mnist-app
+          image: taytwkim/mnist-app:v2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: artifacts
+              mountPath: /app/artifacts
+      volumes:
+        - name: artifacts
+          persistentVolumeClaim:
+            claimName: mnist-artifacts-pvc

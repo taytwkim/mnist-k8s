@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-train-job
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mnist-train
+          image: taytwkim/mnist-train:v2
+          imagePullPolicy: Always
+          command: ["python", "train.py"]
+          args: ["--save-model", "--epochs", "1"]
+          volumeMounts:
+            - name: artifacts
+              mountPath: /app/artifacts
+      volumes:
+        - name: artifacts
+          persistentVolumeClaim:
+            claimName: mnist-artifacts-pvc

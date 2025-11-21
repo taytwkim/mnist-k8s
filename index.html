@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>MNIST Predictor</title>
+    <style>
+      body { font-family: sans-serif; max-width: 600px; margin: 40px auto; }
+      label, input, button { font-size: 16px; }
+      #result { margin-top: 20px; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>MNIST Predictor</h1>
+
+    <p>Enter a sample ID from the MNIST test set (e.g. 0–9999):</p>
+
+    <label for="sample-id">Sample ID:</label>
+    <input id="sample-id" type="number" min="0" step="1" />
+    <button id="predict-btn">Predict</button>
+
+    <div id="result"></div>
+
+    <script>
+      const BACKEND_URL = "http://external-ip";
+
+      const input  = document.getElementById("sample-id");
+      const button = document.getElementById("predict-btn");
+      const result = document.getElementById("result");
+
+      button.addEventListener("click", async () => {
+        const id = input.value.trim();
+        if (!id) {
+          result.textContent = "Please enter a sample ID.";
+          return;
+        }
+
+        result.textContent = "Predicting...";
+
+        try {
+          const res = await fetch(`${BACKEND_URL}/predict/${id}`);
+          if (!res.ok) {
+            result.textContent = `Error: ${res.status} ${res.statusText}`;
+            return;
+          }
+          const data = await res.json();
+
+          result.textContent =
+            `Sample ID: ${data.id}\n` +
+            `Predicted: ${data.predicted}\n` +
+            (data.true_label !== undefined ? `True label: ${data.true_label}\n` : "");
+        } catch (err) {
+          result.textContent = "Request failed: " + err;
+        }
+      });
+    </script>
+  </body>
+</html>
