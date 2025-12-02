@@ -11,7 +11,7 @@ Train an MNIST model in Docker and serve predictions with a Flask app deployed o
 
 ## Workflow
 
-### 1. Build images and push to Dockerhub.
+### 1. Build images and push to Dockerhub
 
 Use docker `buildx` to build `linux/amd64` images (since I’m on an ARM Mac) and push them.
 
@@ -31,7 +31,7 @@ docker buildx build \
   --push .
 ```
 
-### 2. GKE cluster.
+### 2. GKE cluster
 
 * GCP Set Up
 ```bash!
