@@ -1,4 +1,4 @@
-# MNIST on Docker + K8
+# MNIST on Docker + K8s
 
 Train an MNIST model in Docker and serve predictions with a Flask app deployed on Kubernetes (GKE).
 
